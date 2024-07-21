@@ -37,7 +37,7 @@ public class EmployeeServiceimpl implements EmployeeService {
     }
 
     @Override
-    public Employee deleteEmployee(String firstName, String lastName, int department, double salary) {
+    public Employee deleteEmployee(String firstName, String lastName) {
         String key = buildKey(firstName, lastName);
         if (!employees.containsKey(key)) {
             throw new EmployeeNotFoundExeption();
@@ -46,7 +46,7 @@ public class EmployeeServiceimpl implements EmployeeService {
     }
 
     @Override
-    public Employee findEmployee(String firstName, String lastName, int department, double salary) {
+    public Employee findEmployee(String firstName, String lastName) {
         String key = buildKey(firstName, lastName);
         if (!employees.containsKey(key)) {
             throw new EmployeeNotFoundExeption();
