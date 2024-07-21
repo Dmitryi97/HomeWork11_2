@@ -1,6 +1,8 @@
 package pro.sky.HomeWork6_2.service;
 
 import jakarta.annotation.PostConstruct;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 import pro.sky.HomeWork6_2.exeption.EmployeeAlreadyAddedException;
 import pro.sky.HomeWork6_2.exeption.EmployeeNotFoundExeption;
 import pro.sky.HomeWork6_2.exeption.EmployeeStorageIsFullException;
@@ -8,22 +10,20 @@ import pro.sky.HomeWork6_2.model.Employee;
 
 
 import java.util.*;
-
+@Service
 public class EmployeeServiceimpl implements EmployeeService {
     private final int maxEmployee = 15;
     private final Map<String, Employee> employees = new HashMap<>();
-    @PostConstruct
-    private void init(){
-        addEmployee("Ivan","Ivanov",1,10_000);
-        addEmployee("Dmitriy","Petrov",2,20_000);
-        addEmployee("Petr","Sidorov",3,30_000);
-        addEmployee("Sergey","Loginov",4,10_000);
-        addEmployee("Andrey","Ivanov",1,20_200);
-        addEmployee("Ivan","Hicolaev",1,15_000);
+    private final  ValidationServise validationServise;
+
+    public EmployeeServiceimpl(ValidationServise validationServise) {
+        this.validationServise = validationServise;
     }
 
     @Override
     public Employee addEmployee(String firstName, String lastName, int department, double salary) {
+        firstName = validationServise.validateCheckName(firstName);
+        lastName = validationServise.validateCheckName(lastName);
         String key = buildKey(firstName, lastName);
         if (employees.containsKey(key)) {
             throw new EmployeeAlreadyAddedException();
